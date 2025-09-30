@@ -464,7 +464,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Smile Design Gallery** - a SvelteKit application showcasing an art gallery website with a modern, interactive design. The project uses Svelte 5 with TypeScript and focuses on visual presentation of artwork with smooth animations and responsive design.
+This is a **SvelteKit + Supabase Starter Template** - a minimal, production-ready template for building full-stack applications. The project includes authentication, database integration, and a clean foundation to build upon.
 
 ## Key Commands
 
@@ -484,26 +484,26 @@ This is a **Smile Design Gallery** - a SvelteKit application showcasing an art g
 
 ### SvelteKit Structure
 - **Routes**: Uses SvelteKit's file-based routing in `src/routes/`
-- **Layout**: Global layout in `src/routes/+layout.svelte` handles favicon and renders children
+- **Layout**: Global layout in `src/routes/+layout.svelte` handles navigation, auth state, and footer
 - **Pages**:
-  - Home page: `src/routes/+page.svelte` (currently empty/minimal)
-  - Gallery page: `src/routes/gallery/+page.svelte` (main feature page)
+  - Home page: `src/routes/+page.svelte` - Simple welcome page
+  - Auth pages: `src/routes/auth/login/` and `src/routes/auth/register/` - Authentication flows
 
 ### Key Features
-- **Gallery System**: The main gallery page displays artwork cards with hover effects
-- **Responsive Design**: Mobile-first design with Tailwind CSS (loaded via CDN)
-- **Animation**: Custom CSS animations and smooth scroll functionality
-- **Mock Data**: Currently uses placeholder artwork data with gradient backgrounds
+- **Authentication**: Supabase Auth integration with session management
+- **Database**: Supabase PostgreSQL database ready to use
+- **Responsive Design**: Tailwind CSS v4 with custom design tokens
+- **TypeScript**: Full type safety throughout the application
 
 ### Styling Approach
-- **Tailwind CSS**: Loaded via CDN in the gallery page header
-- **Custom CSS**: Additional animations defined in component `<style>` blocks
-- **Color Scheme**: Lime green accent color (#lime-400) with black/gray/white base
+- **Tailwind CSS v4**: Configured via `app.css` with custom CSS variables
+- **Design Tokens**: CSS variables for colors, spacing, and radii in both light and dark modes
+- **Responsive**: Mobile-first design approach
 
-### Data Structure
-- Artworks are structured with: `id`, `title`, `category`, `image` properties
-- Categories include: portrait, street, abstract, minimalist, digital
-- Images currently use placeholder gradients instead of actual image URLs
+### Authentication
+- Session context available via `getContext<SessionData | null>('session')`
+- Supabase client configured with SSR support
+- Auth state changes automatically trigger data revalidation
 
 ## Technical Notes
 
@@ -517,16 +517,21 @@ This is a **Smile Design Gallery** - a SvelteKit application showcasing an art g
 - **Preprocessing**: `vitePreprocess()` for Vite integration
 - **TypeScript**: Strict mode enabled with modern module resolution
 
+### Supabase Integration
+- Client configured in `$lib/supabase.ts`
+- Session management via `+layout.server.ts`
+- Auth state listener in `+layout.svelte`
+
 ### Asset Management
 - Static assets in `/static` directory
-- Library assets in `src/lib/assets/` (currently contains favicon.svg)
+- Library assets in `src/lib/assets/` (contains favicon.svg)
 - `$lib` alias configured for easy imports from `src/lib/`
 
 ## Development Patterns
 
 When working on this project:
-- Follow the existing Tailwind class-based styling approach
-- Maintain the lime green accent color theme
-- Use TypeScript throughout
+- Use TypeScript for all new files
 - Follow SvelteKit conventions for routing and data handling
-- Consider responsive design for all new components
+- Leverage Supabase for backend functionality
+- Use the existing auth patterns for protected routes
+- Maintain responsive design principles

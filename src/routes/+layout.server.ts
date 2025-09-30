@@ -13,19 +13,32 @@ export const load: LayoutServerLoad = async (event) => {
       console.error('Error getting user:', error);
     }
 
-    // Get user profile if authenticated (mock for now)
+    // Get user profile if authenticated
     let userProfile = null;
     if (user) {
-      // Mock user profile - in production this would come from user_profiles table
+      console.log('Authenticated user:', user);
+
+      // Extract name from Google OAuth or other providers
+      const fullName = user.user_metadata?.full_name || user.user_metadata?.name || '';
+      const nameParts = fullName.split(' ');
+      const firstName = user.user_metadata?.firstName || nameParts[0] || 'User';
+      const lastName = user.user_metadata?.lastName || nameParts.slice(1).join(' ') || '';
+
+      // Get avatar from Google OAuth or other providers
+      const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || undefined;
+
+      // In production this would come from user_profiles table
       userProfile = {
         id: user.id,
-        username: user.user_metadata?.username || 'user',
-        firstName: user.user_metadata?.firstName || 'User',
-        lastName: user.user_metadata?.lastName || '',
+        username: user.user_metadata?.username || user.email?.split('@')[0] || 'user',
+        firstName,
+        lastName,
+        avatar,
+        bio: user.user_metadata?.bio,
         role: 'buyer',
-        isVerified: false,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        isVerified: user.user_metadata?.email_verified || false,
+        createdAt: new Date(user.created_at || Date.now()),
+        updatedAt: new Date(user.updated_at || Date.now())
       };
     }
 
